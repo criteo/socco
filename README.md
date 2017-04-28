@@ -1,5 +1,3 @@
-![Build status](https://api.travis-ci.org/criteo/socco.svg?branch=master)
-
 # Socco
 
 Socco is a Scala compiler plugin to generate documentation from Scala source files.
