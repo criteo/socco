@@ -1,0 +1,4 @@
+<plugin>
+    <name>socco</name>
+    <classname>com.criteo.Socco</classname>
+</plugin>

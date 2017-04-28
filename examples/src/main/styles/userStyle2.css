@@ -1,0 +1,37 @@
+section {
+  display: block;
+  width: 768px;
+  margin: auto;
+  margin-bottom: 25px;
+}
+
+.hide, .empty {
+  display: none;
+}
+
+.comment {
+  padding: 0;
+}
+
+.comment h1 {
+  margin: 0 0 .5em 0;
+  font-size: 18px;
+}
+
+#header h1 {
+  font-size: 24px;
+}
+
+.code {
+  margin: 0;
+  border: none;
+  padding: 15px;
+}
+
+#header {
+  margin-top: 2.5em;
+}
+
+#header .code, #footer .code {
+  display: none;
+}

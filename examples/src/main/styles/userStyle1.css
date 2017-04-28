@@ -1,0 +1,60 @@
+.code {
+  background: #000;
+  color: #ccc;
+  border: none;
+}
+
+.identifier {
+  color: #fff;
+}
+
+.keyword {
+  color: #50E3C2;
+}
+
+.number {
+  color: #79deff;
+}
+
+.string {
+  color: #FF2E88;
+}
+
+a {
+  border-bottom: 1px dotted #ccc;
+}
+
+.tooltip {
+  opacity: 0;
+  transition: transform 200ms ease-out;
+  transition-property: transform, opacity;
+  background: #eee;
+  color: #252831;
+  text-shadow: none;
+  box-shadow: 0 0 2px #c1c1c1;
+}
+.tooltip.top,
+.tooltip.top-left,
+.tooltip.top-right {
+  transform: translateY(15px);
+}
+.tooltip.bottom,
+.tooltip.bottom-left,
+.tooltip.bottom-right {
+  transform: translateY(-15px);
+}
+.tooltip.left,
+.tooltip.left-top,
+.tooltip.left-bottom {
+  transform: translateX(15px);
+}
+.tooltip.right,
+.tooltip.right-top,
+.tooltip.right-bottom {
+  transform: translateX(-15px);
+}
+.tooltip.in {
+  opacity: 1;
+  transform: none;
+  transition-duration: 100ms;
+}
