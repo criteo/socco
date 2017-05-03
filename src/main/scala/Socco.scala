@@ -307,14 +307,14 @@ class Socco(val global: Global) extends Plugin {
               // that the symbol with the name matching exactly the source code text is the best.
               // One execption though, apply(...) method application does not appear in the source
               // code and it still gives the best information, so we prefer apply when possible.
-              symbols.sortWith {
-                case (symbol,_) if symbol.name.toString == "apply" => true
-                case (_,symbol) if symbol.name.toString == "apply" => false
-                case (symbol,_) if symbol.name.toString == token.text => true
-                case (_,symbol) if symbol.name.toString == token.text => false
-                case _ => true
-              }.headOption.flatMap(maybeTypeSymbol)
-
+              symbols.find(_.name.toString == "apply").
+                orElse {
+                  symbols.find(_.name.toString == token.text)
+                }.
+                orElse {
+                  symbols.headOption
+                }.
+                flatMap(maybeTypeSymbol)
             token.copy(style = Identifier(bestTypeAnnotation))
 
           case (token, _) =>
