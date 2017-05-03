@@ -35,6 +35,13 @@ a {
   color: inherit;
 }
 
+hr {
+  border: none;
+  border-bottom: 4px solid #efeff3;
+  margin-top: 11px;
+  margin-bottom: 46px;
+}
+
 .comment {
   font-family: 'Georgia', Serif;
   flex: 1;
