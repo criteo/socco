@@ -174,7 +174,7 @@ class Socco(val global: Global) extends Plugin {
               ABSTRACT | CASE | CATCH | CLASS | DEF | DO | ELSE | EXTENDS | FINAL |
               FINALLY | FOR | IF | IMPLICIT | IMPORT | LAZY | NEW | MACRO | MATCH |
               OBJECT | PACKAGE | PRIVATE | PROTECTED | RETURN | SUPER | TRY | VAL |
-              VAR | WHILE | YIELD => Keyword
+              VAR | WHILE | YIELD | CASECLASS => Keyword
             case _ => Default
           })
         }.filterNot(_.length <= 0)

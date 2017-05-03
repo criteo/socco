@@ -11,7 +11,7 @@ before_deploy:
 - tar xvf .travis/keys.tar
 deploy:
   provider: script
-  script: sbt publishSigned sonatypeRelease
+  script: sbt publishSigned sonatypeReleaseAll
   skip_cleanup: true
   on:
     tags: true
