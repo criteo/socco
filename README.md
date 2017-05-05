@@ -18,13 +18,13 @@ If you use SBT, add the following settings to enable the plugin:
 
 ```scala
 autoCompilerPlugins := true
-addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.1")
+addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.6")
 ```
 
 If you are using scalac directly, add the following option:
 
 ```sh
--Xplugin:com.criteo.socco.socco-plugin_2.12-0.1.1.jar
+-Xplugin:com.criteo.socco.socco-plugin_2.12-0.1.6.jar
 ```
 
 This can be followed by any of the available options:
