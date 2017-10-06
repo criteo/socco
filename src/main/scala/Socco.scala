@@ -167,7 +167,7 @@ class Socco(val global: Global) extends Plugin {
 
           val text = source.content.slice(start, start + length)
           Token(start, new String(text), code match {
-            case STRINGLIT => StringLiteral
+            case STRINGLIT | STRINGPART | INTERPOLATIONID => StringLiteral
             case x if isLiteral(x) => NumberLiteral
             case x if isIdentifier(x) => Identifier(None)
             case

@@ -1,5 +1,5 @@
 val SCALA_VERSION = "2.12.2"
-val VERSION = "0.1.6"
+val VERSION = "0.1.7"
 
 usePgpKeyHex("755d525885532e9e")
 
