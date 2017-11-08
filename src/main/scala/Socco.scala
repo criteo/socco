@@ -219,7 +219,7 @@ class Socco(val global: Global) extends Plugin {
               Some((go(c.owner).fold("") { case (p, s, _) => p + s } + c.name, "$", ".html"))
             case m: MethodSymbol =>
               val methodAnchor = {
-                val returnType = m
+                val returnType = m.returnType.toString.replaceAll("""\s""", "")
                 m.name + m.info.toString.replaceAll("""\s""", "").replaceAll(s"(=>)?\\Q$returnType\\E${'$'}", s":$returnType")
               }
               Some((go(m.owner).fold("") { case (p, _, s) => p + s } + "#" + methodAnchor, "", ""))
