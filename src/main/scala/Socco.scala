@@ -90,24 +90,26 @@ class Socco(val global: Global) extends Plugin {
       def apply(unit: CompilationUnit): Unit = {
         // First, we check if we need to process this unit,
         // and we split the source into (comments,code) blocks.
-        val (maybeTitle, blocks) = splitInBlocks(unit)
+        val (headerOffset, maybeTitle, blocks) = splitInBlocks(unit)
 
         maybeTitle.foreach { case title =>
           // Now we tokenize the source code using
           // the scala compiler analyzer.
-          val tokens = tokenize(unit)
+          val tokens = tokenize(unit, headerOffset)
 
           // Try to type the relevant tokens and to generate
           // links to the scala documentation.
-          val typedTokens = typeTokens(unit, tokens)
+          val typedTokens = typeTokens(unit, tokens, headerOffset)
 
           // Finally generate the HTML output
           generate(unit, typedTokens, title, blocks)
         }
       }
 
-      def splitInBlocks(unit: CompilationUnit): (Option[String], Seq[(Block,Block)]) = {
-        val lines = new String(unit.source.content).split("\n")
+      def splitInBlocks(unit: CompilationUnit): (Int, Option[String], Seq[(Block,Block)]) = {
+        val src = new String(unit.source.content)
+        val headerOffset = src.indexOf("\n// Example:") + 1
+        val lines = src.substring(headerOffset).split("\n")
         val maybeTitle = lines.headOption.flatMap {
           case regex"// Example:(.*)$title" => Some(title.trim)
           case _ => None
@@ -135,14 +137,14 @@ class Socco(val global: Global) extends Plugin {
             })
         }
 
-        maybeTitle -> (
+        (headerOffset, maybeTitle,
           blocks.reverse.collect { case Left(b) => b }.zip(
             blocks.reverse.collect { case Right(b) => b }
           ).dropWhile { case (a,b) => a.isEmpty && b.isEmpty }
         )
       }
 
-      def tokenize(unit: CompilationUnit): Seq[Token] = {
+      def tokenize(unit: CompilationUnit, headerOffset: Int): Seq[Token] = {
         val source = unit.source
         val tokens = collection.mutable.HashMap.empty[Int, (Int,Int)]
 
@@ -166,7 +168,7 @@ class Socco(val global: Global) extends Plugin {
           import nsc.ast.parser.Tokens._
 
           val text = source.content.slice(start, start + length)
-          Token(start, new String(text), code match {
+          Token(math.max(0, start - headerOffset), new String(text), code match {
             case STRINGLIT | STRINGPART | INTERPOLATIONID => StringLiteral
             case x if isLiteral(x) => NumberLiteral
             case x if isIdentifier(x) => Identifier(None)
@@ -180,13 +182,13 @@ class Socco(val global: Global) extends Plugin {
         }.filterNot(_.length <= 0)
       }
 
-      def typeTokens(unit: CompilationUnit, tokens: Seq[Token]): Seq[Token] = {
+      def typeTokens(unit: CompilationUnit, tokens: Seq[Token], headerOffset: Int): Seq[Token] = {
         import collection.mutable._
         val tokenSymbols = HashMap(tokens.map(_ -> ListBuffer.empty[Symbol]): _*)
         (new Traverser {
           override def traverse(tree: Tree) = {
             if(tree.pos != NoPosition) {
-              tokens.find(_.start == tree.pos.point).foreach { token =>
+              tokens.find(_.start == tree.pos.point - headerOffset).foreach { token =>
                 tree match {
                   case tree: TypeTree =>
                     tokenSymbols(token) += tree.symbol
@@ -219,7 +221,7 @@ class Socco(val global: Global) extends Plugin {
               Some((go(c.owner).fold("") { case (p, s, _) => p + s } + c.name, "$", ".html"))
             case m: MethodSymbol =>
               val methodAnchor = {
-                val returnType = m
+                val returnType = m.returnType.toString.replaceAll("""\s""", "")
                 m.name + m.info.toString.replaceAll("""\s""", "").replaceAll(s"(=>)?\\Q$returnType\\E${'$'}", s":$returnType")
               }
               Some((go(m.owner).fold("") { case (p, _, s) => p + s } + "#" + methodAnchor, "", ""))
