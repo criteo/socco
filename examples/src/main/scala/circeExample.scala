@@ -1,6 +1,6 @@
 // Example: Parsing JSON with circe.
 //
-// Circe is a JSON library for Scala powered by [Cats](http://typelevel.org/cats/). 
+// Circe is a JSON library for Scala powered by [Cats](http://typelevel.org/cats/).
 // Let's use it to parse a JSON fragment and extract some data.
 import io.circe._
 import io.circe.parser._
@@ -12,7 +12,7 @@ object ParseSomeJson {
   val json = """
     {
       "id": "c730433b-082c-4984-9d66-855c243266f0",
-      "values": { 
+      "values": {
         "bar": true,
         "baz": 100.001
       }

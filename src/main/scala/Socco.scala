@@ -6,6 +6,7 @@ import nsc.plugins.{ Plugin, PluginComponent }
 
 class Socco(val global: Global) extends Plugin {
   import global._
+  import Compat._
 
   val name = "socco"
   val description = """
@@ -146,7 +147,6 @@ class Socco(val global: Global) extends Plugin {
         val tokens = collection.mutable.HashMap.empty[Int, (Int,Int)]
 
         class Tokenizer extends syntaxAnalyzer.UnitScanner(unit) {
-          override def deprecationWarning(msg: String,since: String) = ()
           override def error(off: Int, msg: String) = ()
           override def incompleteInputError(off: Int, msg: String) = ()
           override def nextToken() = {

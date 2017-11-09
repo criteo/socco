@@ -1,5 +1,4 @@
-val SCALA_VERSION = "2.12.2"
-val VERSION = "0.1.7"
+val VERSION = "0.1.8"
 
 usePgpKeyHex("755d525885532e9e")
 
@@ -19,13 +18,18 @@ def removeDependencies(groups: String*)(xml: scala.xml.Node) = {
   ))(xml)
 }
 
+lazy val commonSettings = Seq(
+  version := VERSION,
+  scalaVersion := "2.12.4",
+  crossScalaVersions := Seq("2.11.11", scalaVersion.value)
+)
+
 lazy val socco =
   (project in file(".")).
   settings(
+    commonSettings,
     organization := "com.criteo.socco",
     name := "socco-plugin",
-    version := VERSION,
-    scalaVersion := SCALA_VERSION,
     scalacOptions ++= Seq(
       "-deprecation",
       "-encoding", "UTF-8",
@@ -38,7 +42,7 @@ lazy val socco =
       "-Ywarn-unused-import"
     ),
     libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-compiler" % SCALA_VERSION,
+      "org.scala-lang" % "scala-compiler" % scalaVersion.value,
       "org.planet42" %% "laika-core" % "0.7.0"
     ),
     credentials += Credentials(
@@ -84,9 +88,9 @@ lazy val socco =
     },
     assemblyExcludedJars in assembly := {
       (fullClasspath in assembly).value.filter {
-        case jar if jar.data.getName == s"scala-reflect-$SCALA_VERSION.jar" => true
-        case jar if jar.data.getName == s"scala-library-$SCALA_VERSION.jar" => true
-        case jar if jar.data.getName == s"scala-compiler-$SCALA_VERSION.jar" => true
+        case jar if jar.data.getName.startsWith("scala-reflect-") => true
+        case jar if jar.data.getName.startsWith("scala-library-") => true
+        case jar if jar.data.getName.startsWith("scala-compiler-") => true
         case _ => false
       }
     },
@@ -94,9 +98,11 @@ lazy val socco =
     // Used to generate examples
     commands += Command.command("generateExamples") { (state) =>
       def enablePlugin(userStyle: Option[String] = None, linkScala: Boolean = false) = {
+        val X = Project.extract(state)
+        val version = X.get(scalaVersion)
         s"""
           set scalacOptions in examples := Seq(
-            "-Xplugin:target/scala-${SCALA_VERSION.split("[.]").take(2).mkString(".")}/socco-plugin-assembly-$VERSION.jar",
+            "-Xplugin:target/scala-${version.split("[.]").take(2).mkString(".")}/socco-plugin-assembly-$VERSION.jar",
             ${userStyle.map(style => "\"-P:socco:style:examples/src/main/styles/" + style + ".css\",").getOrElse("")}
             ${if(linkScala) "\"-P:socco:package_scala:http://www.scala-lang.org/api/current/\"," else ""}
             "-P:socco:out:examples/target/html${userStyle.map(style => s"/$style").getOrElse("")}",
@@ -118,7 +124,7 @@ lazy val socco =
 lazy val examples =
   project.
   settings(
-    scalaVersion := SCALA_VERSION,
+    commonSettings,
     publishArtifact := false,
     libraryDependencies ++= Seq(
       "co.fs2" %% "fs2-core" % "0.9.5"

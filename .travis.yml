@@ -1,7 +1,7 @@
 language: scala
 jdk:
 - oraclejdk8
-script: sbt compile
+script: sbt +compile
 env:
   global:
     secure: C0bpzUBE2UXNJ30dyIQOc/6tpV7tUD5Sbyoob8MGdgn6pPYYE8A+CUxcc72++LhoI6Sz1m13X+fCw5E4vzxYaWkbSd8Hn2ODxL1fbWWnNUisCOXU503icjwQIZUHO/AEXO9wHdmMsXRCYkz9con/aBrglSudQGNBLoXj49lI0tCypM2FjuSIQHbZm1bRZ42syVVD1VtK4EcjzD1hpLMm2hxoetUPZNsN9J7AgBrG063eZJgwiY7soQf6LRi3XKVuIq/gM4SnkxQtYOthvCzbt8tDTQsP+L5yuv7tJAMStZq7XzU5UVfvAQGO/TkqJcg/S4RB8Z2MOGgrFFBRXaI6DViYkjoTsCKINWkTz4DNbrtRqftsXnjWdxIanzKRr8hTdcE77ecULBXqNDJhVssini7k+aEVGE12tc2EXbK8PYXk3cAmk6CJGFlZiwStemP6XyKEu/kdxd13Rxms4etPSX2x2cb8spzurwjJz1X0g4FKqa6UCWibnNNrESSxJY8hDit8nA/oJBCilOvWXsHrMw74dIc/hIYK4i8cLTMXldgWkKRjTLDDmsBIsqIiBdiU5I6HUmBJ3lJHKBEGn2/ys1LT20ik3rbaVX7h2Kx5aOzpBuj5zhdZe9fCcZAIRrBhfopmihQUflxeFTIsmPwhDMCTRm5OafRQWAD+NLimV8w=
@@ -11,7 +11,7 @@ before_deploy:
 - tar xvf .travis/keys.tar
 deploy:
   provider: script
-  script: sbt publishSigned sonatypeReleaseAll
+  script: sbt +publishSigned "sonatypeReleaseAll com.criteo"
   skip_cleanup: true
   on:
     tags: true
