@@ -1,4 +1,4 @@
-val VERSION = "0.1.8"
+val VERSION = "0.1.9"
 
 usePgpKeyHex("755d525885532e9e")
 
