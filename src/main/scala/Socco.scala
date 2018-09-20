@@ -224,7 +224,8 @@ class Socco(val global: Global) extends Plugin {
                 val returnType = m.returnType.toString.replaceAll("""\s""", "")
                 m.name + m.info.toString.replaceAll("""\s""", "").replaceAll(s"(=>)?\\Q$returnType\\E${'$'}", s":$returnType")
               }
-              Some((go(m.owner).fold("") { case (p, _, s) => p + s } + "#" + methodAnchor, "", ""))
+              val url = go(m.owner).fold("") { case (p, _, s) => p + s }
+              Some((url.replaceAll("/package\\$\\.html$", "/index.html") + "#" + methodAnchor, "", ""))
             case _ =>
               None
           }
