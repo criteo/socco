@@ -1,6 +1,7 @@
 language: scala
 jdk:
-- oraclejdk8
+- openjdk8
+- openjdk12
 script: sbt +compile
 env:
   global:
