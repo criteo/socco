@@ -21,7 +21,7 @@ def removeDependencies(groups: String*)(xml: scala.xml.Node) = {
 lazy val commonSettings = Seq(
   version := VERSION,
   scalaVersion := "2.12.9",
-  crossScalaVersions := Seq("2.11.11", scalaVersion.value)
+  crossScalaVersions := Seq("2.11.12", scalaVersion.value)
 )
 
 lazy val socco =
