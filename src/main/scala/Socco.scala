@@ -16,7 +16,7 @@ class Socco(val global: Global) extends Plugin {
 
   // Plugin options
   var userStyles = Option.empty[String]
-  var out = new java.io.File(".")
+  var out = new java.io.File(sys.env.get("SOCCO_OUT").getOrElse("."))
   var packages = Map.empty[String,String]
   var header = Option.empty[String]
   var footer = Option.empty[String]
@@ -426,7 +426,7 @@ class Socco(val global: Global) extends Plugin {
         outStream.write(html.getBytes("utf-8"))
         outStream.close()
 
-        println(s"[socco] transformed ${sourceFile} to ${htmlFile}")
+        println(s"[socco] transformed ${sourceFile} to ${htmlFile.getAbsolutePath}")
       }
 
     }
