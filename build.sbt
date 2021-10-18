@@ -1,7 +1,5 @@
 val VERSION = "0.1.10"
 
-usePgpKeyHex("755d525885532e9e")
-
 def removeDependencies(groups: String*)(xml: scala.xml.Node) = {
   import scala.xml._
   import scala.xml.transform._
@@ -53,9 +51,9 @@ lazy val socco =
       sys.env.getOrElse("SONATYPE_PASSWORD", "")
     ),
     sonatypeProfileName := "com.criteo",
-    pgpPassphrase := sys.env.get("SONATYPE_PASSWORD").map(_.toArray),
-    pgpSecretRing := file(".travis/secring.gpg"),
-    pgpPublicRing := file(".travis/pubring.gpg"),
+    pgpPassphrase := sys.env.get("MAVEN_SECRING_PASSWORD").map(_.toArray),
+    pgpSecretRing := file("secring.gpg"),
+    pgpPublicRing := file("pubring.gpg"),
     pomExtra in Global := {
       <url>https://github.com/criteo/socco</url>
       <licenses>
